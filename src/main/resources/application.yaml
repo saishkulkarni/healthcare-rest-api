@@ -4,6 +4,13 @@ spring:
   datasource:
     url: jdbc:${DB_URL:mysql://localhost:3306/hms_db?createDatabaseIfNotExist=true}
     username: ${DB_USER:root}
-    password: ${DB_PASSWORD}
+    password: ${DB_PASSWORD:root}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 server:
   port: ${PORT:8080}
+admin:
+  email: ${ADMIN_EMAIL:admin@hms.com}
+  password: ${ADMIN_PASSWORD:admin123}

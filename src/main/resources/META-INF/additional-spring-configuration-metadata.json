@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "admin.email",
+    "type": "java.lang.String",
+    "description": "Email for the system administrator."
+  },
+  {
+    "name": "admin.password",
+    "type": "java.lang.String",
+    "description": "Password for the system administrator."
+  }
+]}

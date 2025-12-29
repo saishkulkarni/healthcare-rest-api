@@ -1,0 +1,184 @@
+Hospital Management System (HMS) – REST API Design Document
+
+System Overview
+
+* This system is a role-based hospital management platform with four main user roles:
+Admin
+Doctor
+Receptionist
+Patient
+The application is API-driven, consumed by web/mobile clients.
+
+* User Roles & Responsibilities
+
+1. Admin
+Default admin account exists in DB (created at startup).
+Can login & change password.
+Can create:
+Doctor
+Receptionist
+Generates unique registration codes for doctors & receptionists.
+Sends registration email with code.
+Can view all users.
+
+2. Doctor
+Registers using:
+Email
+Password
+Unique registration code
+After login:
+View & update profile
+Add specialization & experience
+View appointments
+Add prescriptions
+View patient medical history
+Mark appointment as completed
+
+3. Receptionist
+Registers using:
+Email
+Password
+Unique registration code
+Can:
+View doctors & their schedules
+Add appointments on behalf of patients
+Confirm appointments physically or via call
+
+4. Patient
+Self registration (email + password)
+Login
+View doctors by specialization
+View doctor availability
+Book appointment
+Make payment (before or after visit)
+View prescriptions & medical history
+
+* High Level Architecture
+Client (Web / Mobile)
+        |
+        v
+REST Controllers (Role based)
+        |
+        v
+Service Layer (Business Logic)
+        |
+        v
+Repository Layer (JPA / Hibernate)
+        |
+        v
+Database (MySQL / PostgreSQL)
+
+* Entity Relationship (ER Diagram – Textual)
+User (abstract)
+ ├── Admin
+ ├── Doctor
+ ├── Receptionist
+ └── Patient
+
+Doctor 1 --- * Appointment * --- 1 Patient
+Doctor 1 --- * Prescription
+Patient 1 --- * MedicalRecord
+Doctor 1 --- * Schedule
+Admin 1 --- * RegistrationCode
+
+* Database Entities (Core Tables)
+🔹 User (Base Entity)
+id (PK)
+email
+password
+role (ADMIN, DOCTOR, RECEPTIONIST, PATIENT)
+status (ACTIVE / INACTIVE)
+created_at
+
+🔹 Doctor
+id (PK, FK -> User)
+name
+specialization
+experience
+registration_code
+
+🔹 Receptionist
+id (PK, FK -> User)
+registration_code
+
+🔹 Patient
+id (PK, FK -> User)
+age
+gender
+phone
+
+🔹 Appointment
+id
+doctor_id
+patient_id
+appointment_date
+time_slot
+status (BOOKED / COMPLETED / CANCELLED)
+payment_status (PAID / UNPAID)
+
+🔹 Prescription
+id
+appointment_id
+doctor_id
+patient_id
+diagnosis
+medicines
+notes
+created_at
+
+🔹 RegistrationCode
+id
+code
+role (DOCTOR / RECEPTIONIST)
+is_used
+created_at
+expires_at
+
+* API ENDPOINT DESIGN
+🔐 Authentication
+Method	Endpoint	Description
+POST	/auth/login	Login
+POST	/auth/register	Register using code
+POST	/auth/logout	Logout
+
+🧑‍⚕️ Admin APIs
+Method	Endpoint	Description
+POST	/admin/create-doctor	Create doctor & generate code
+POST	/admin/create-receptionist	Create receptionist
+GET	/admin/users	View all users
+
+🧑‍⚕️ Doctor APIs
+Method	Endpoint	Description
+GET	/doctor/profile	View profile
+PUT	/doctor/profile	Update profile
+GET	/doctor/appointments	View appointments
+POST	/doctor/prescription	Add prescription
+GET	/doctor/patients/{id}/history	View patient history
+
+🧍 Patient APIs
+Method	Endpoint	Description
+POST	/patient/register	Register
+GET	/patient/doctors	 View doctors
+GET	/patient/appointments	View appointments
+POST	/patient/appointment/book	Book appointment
+GET	/patient/history 	Medical history
+
+🧾 Receptionist APIs
+Method	Endpoint	Description
+GET	/receptionist/doctors	View doctors
+POST	/receptionist/appointment	Book appointment
+GET	/receptionist/appointments	View daily schedule
+
+* Flow Diagram (Textual)
+Admin → Creates Doctor/Receptionist → Sends Code
+Doctor/Receptionist  → Login → Use System
+Patient → Register → Login → View Doctors → Book Appointment → Pay → Visit Doctor
+Doctor → View Appointments → Add Prescription → Close Visit
+Receptionist → Coordinate Appointments
+
+* Security Design
+Spring Security + JWT
+Role-based authorization
+Password hashing (BCrypt)
+Token expiration & refresh
+API level authorization (@PreAuthorize)
