@@ -14,3 +14,6 @@ server:
 admin:
   email: ${ADMIN_EMAIL:admin@hms.com}
   password: ${ADMIN_PASSWORD:admin123}
+jwt:
+  secret: ${JWT_SECRET:gajsdhjagsdgadsgjtbqwytebqwtyqbtsddyuagsdgasdjhasdjgajsdgagsdjgasjdgjhasgdhgasdgqwenbsdoiqweoiquweqweqwe}
+  expirytime: ${JWT_EXPIRY:86400000}
