@@ -6,11 +6,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.hms.healthcare.exception.GlobalExceptionHandler;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -33,6 +35,33 @@ public class JwtUtil {
 		return Jwts.builder().claims(claims).subject(userDetails.getUsername())
 				.issuedAt(new Date(System.currentTimeMillis()))
 				.expiration(new Date(System.currentTimeMillis() + tokenExpirytTime)).signWith(key).compact();
+	}
+
+	public String extractUsername(String token) {
+		return extractAllClaims(token).getSubject();
+	}
+
+	public SimpleGrantedAuthority extractRole(String token) {
+		Claims claims = extractAllClaims(token);
+		String role = claims.get("role", String.class);
+		return new SimpleGrantedAuthority(role);
+	}
+
+	public Date extractExpiration(String token) {
+		return extractAllClaims(token).getExpiration();
+	}
+
+	public boolean validateToken(String token, UserDetails userDetails) {
+		final String username = extractUsername(token);
+		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+	}
+
+	private boolean isTokenExpired(String token) {
+		return extractExpiration(token).before(new Date());
+	}
+
+	private Claims extractAllClaims(String token) {
+		return Jwts.parser().setSigningKey(key).build().parseSignedClaims(token).getPayload();
 	}
 
 }

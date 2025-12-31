@@ -3,9 +3,9 @@ package com.hms.healthcare.dto;
 import lombok.Data;
 
 @Data
-public class UserDto {
+public class UserResponseDto {
 	private String email;
 	private String username;
-	private String mobile;
+	private Long mobile;
 	private String role;
 }

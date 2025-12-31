@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.hms.healthcare.dao.UserDao;
 import com.hms.healthcare.dto.LoginDto;
 import com.hms.healthcare.entity.User;
+import com.hms.healthcare.mapper.UserMapper;
 import com.hms.healthcare.util.JwtUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class AuthServiceImpl implements AuthService {
 
 	private final AuthenticationManager authenticationManager;
 	private final UserDetailsService userDetailsService;
+	private final UserMapper userMapper;
 	private final UserDao userDao;
 	private final JwtUtil jwtUtil;
 
@@ -34,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
 		String token = jwtUtil.generateToken(userDetails);
 		User user = userDao.findByEmail(loginDto.getEmail());
 		log.info("{} logged in successfully", user.getUsername());
-		return Map.of("message", "Login successful", "token", token, "user", user);
+		return Map.of("message", "Login successful", "token", token, "user", userMapper.toUserResponseDto(user));
 	}
 
 }
