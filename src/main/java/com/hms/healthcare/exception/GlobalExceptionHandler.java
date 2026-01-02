@@ -41,4 +41,10 @@ public class GlobalExceptionHandler {
 	public Map<String, Object> handleDataNotFoundException(HttpMessageNotReadableException ex) {
 		return Map.of("error", "Enter Email and Password in correct format");
 	}
+
+	@ExceptionHandler(IllegalArgumentException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public Map<String, Object> handleDataNotFoundException(IllegalArgumentException ex) {
+		return Map.of("error", ex.getMessage());
+	}
 }

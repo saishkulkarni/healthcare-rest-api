@@ -19,4 +19,8 @@ public class UserDao {
 				.orElseThrow(() -> new DataNotFoundException("User not found with email: " + email));
 	}
 
+	public void save(User user) {
+		userRepository.save(user);
+	}
+
 }
