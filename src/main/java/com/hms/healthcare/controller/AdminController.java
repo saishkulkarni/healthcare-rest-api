@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hms.healthcare.dto.AdminPasswordDto;
+import com.hms.healthcare.dto.DoctorDto;
 import com.hms.healthcare.service.AdminService;
 
 import jakarta.validation.Valid;
@@ -31,5 +33,13 @@ public class AdminController {
 			Principal principal) {
 		return adminService.changePassword(adminPasswordDto, principal);
 	}
+	
+	@PostMapping("/enroll/doctor")
+	@PreAuthorize("hasRole('ADMIN')")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Map<String, Object> enrollDoctor(@Valid @RequestBody DoctorDto doctorDto) {
+		return adminService.enrollDoctor(doctorDto);
+	}
 
+	
 }
