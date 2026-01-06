@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Doctor {
+public class Receptionist {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -22,14 +22,8 @@ public class Doctor {
 	private String name;
 	@Column(nullable = false, unique = true)
 	private Long phoneNumber;
-	@Column(nullable = false)
-	private String specialization;
-	@Column(nullable = false)
-	private Integer experienceYears;
 	@Column(nullable = false, length = 500)
 	private String address;
-	@Column(nullable = false, unique = true)
-	private String licenceNumber;
 
 	@OneToOne
 	private User user;

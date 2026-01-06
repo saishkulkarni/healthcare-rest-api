@@ -12,14 +12,13 @@ The application is API-driven, consumed by web/mobile clients.
 * User Roles & Responsibilities
 
 1. Admin
-Default admin account exists in DB (created at startup).
-Can login & change password.
+Default admin account exists in DB (created at startup). *
+Can login & change password. *
 Can create:
-Doctor
-Receptionist
-Generates unique registration codes for doctors & receptionists.
-Sends registration email with code.
-Can view all users.
+Doctor *
+Receptionist *
+Sends registration email with code. *
+Can view all users. *
 
 2. Doctor
 Registers using:

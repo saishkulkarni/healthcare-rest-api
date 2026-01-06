@@ -23,7 +23,7 @@ public class UserDao {
 		userRepository.save(user);
 	}
 
-	public boolean checkEmailAndMobile(String email, Long mobile) {
+	public boolean checkDuplicateEmailAndMobile(String email, Long mobile) {
 		return userRepository.existsByEmailOrMobile(email, mobile);
 	}
 

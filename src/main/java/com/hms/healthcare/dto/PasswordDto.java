@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Data
-public class AdminPasswordDto {
+public class PasswordDto {
 	@NotEmpty(message = "Previous password must not be empty")
 	private String prevPassword;
 	@NotEmpty(message = "New password must not be empty")

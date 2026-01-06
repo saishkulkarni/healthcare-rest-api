@@ -1,4 +1,4 @@
-package com.hms.healthcare.util;
+package com.hms.healthcare.security;
 
 import java.security.Key;
 import java.util.Date;
@@ -60,6 +60,7 @@ public class JwtUtil {
 		return extractExpiration(token).before(new Date());
 	}
 
+	@SuppressWarnings("deprecation")
 	private Claims extractAllClaims(String token) {
 		return Jwts.parser().setSigningKey(key).build().parseSignedClaims(token).getPayload();
 	}
