@@ -32,7 +32,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public Map<String, Object> enrollDoctor(DoctorDto doctorDto) {
-		if (userDao.checkDuplicateEmailAndMobile(doctorDto.getName(), doctorDto.getPhoneNumber())) {
+		if (userDao.checkDuplicateEmailAndMobile(doctorDto.getEmail(), doctorDto.getPhoneNumber())) {
 			throw new IllegalArgumentException("User with given email or mobile already exists");
 		}
 		User user = new User(null, doctorDto.getName(), doctorDto.getEmail(),
@@ -48,7 +48,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public Map<String, Object> enrollReceptionist(ReceptionistDto receptionistDto) {
-		if (userDao.checkDuplicateEmailAndMobile(receptionistDto.getName(), receptionistDto.getPhoneNumber())) {
+		if (userDao.checkDuplicateEmailAndMobile(receptionistDto.getEmail(), receptionistDto.getPhoneNumber())) {
 			throw new IllegalArgumentException("User with given email or mobile already exists");
 		}
 		User user = new User(null, receptionistDto.getName(), receptionistDto.getEmail(),

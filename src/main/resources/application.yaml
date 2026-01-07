@@ -20,6 +20,9 @@ spring:
           auth: true
           starttls:
             enable: true
+  data:
+    redis:
+      url: ${REDIS_URL:redis://localhost:6379}
 server:
   port: ${PORT:8080}
 admin:
