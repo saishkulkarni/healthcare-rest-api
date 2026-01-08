@@ -17,6 +17,7 @@ import com.hms.healthcare.dto.LoginDto;
 import com.hms.healthcare.dto.OtpDto;
 import com.hms.healthcare.dto.PasswordDto;
 import com.hms.healthcare.dto.PatientDto;
+import com.hms.healthcare.dto.ResetPasswordDto;
 import com.hms.healthcare.service.AuthService;
 
 import jakarta.validation.Valid;
@@ -58,5 +59,17 @@ public class AuthController {
 	@ResponseStatus(HttpStatus.OK)
 	public Map<String, Object> resendOtp(@PathVariable String email) {
 		return authService.resendOtp(email);
+	}
+
+	@PatchMapping("/forgot-password/{email}")
+	@ResponseStatus(HttpStatus.OK)
+	public Map<String, Object> forgotPassword(@PathVariable String email) {
+		return authService.forgotPassword(email);
+	}
+
+	@PatchMapping("/reset-password")
+	@ResponseStatus(HttpStatus.OK)
+	public Map<String, Object> resetPassword(@Valid @RequestBody ResetPasswordDto resetPasswordDto) {
+		return authService.resetPassword(resetPasswordDto);
 	}
 }

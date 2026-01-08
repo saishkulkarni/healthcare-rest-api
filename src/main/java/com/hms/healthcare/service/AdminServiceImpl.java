@@ -14,6 +14,7 @@ import com.hms.healthcare.entity.Doctor;
 import com.hms.healthcare.entity.Receptionist;
 import com.hms.healthcare.entity.User;
 import com.hms.healthcare.enums.HospitalRoles;
+import com.hms.healthcare.mapper.DoctorMapper;
 import com.hms.healthcare.util.EmailService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class AdminServiceImpl implements AdminService {
 	private final DoctorDao doctorDao;
 	private final ReceptionistDao receptionistDao;
 	private final EmailService emailService;
+	private final DoctorMapper doctorMapper;
 
 	@Override
 	public Map<String, Object> enrollDoctor(DoctorDto doctorDto) {
@@ -61,5 +63,10 @@ public class AdminServiceImpl implements AdminService {
 		emailService.sendConfirmation(user.getEmail(), receptionistDto.getPassword(), "RECEPTIONIST",
 				receptionistDto.getName());
 		return Map.of("message", "Receptionist Enrolled Successfully", "receptionist", recceptionist);
+	}
+
+	@Override
+	public Map<String, Object> getAllDoctors() {
+		return Map.of("message", "Doctors Found", "doctors", doctorMapper.toDoctorDtoList(doctorDao.findAll()));
 	}
 }

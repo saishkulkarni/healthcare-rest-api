@@ -7,6 +7,7 @@ import com.hms.healthcare.dto.LoginDto;
 import com.hms.healthcare.dto.OtpDto;
 import com.hms.healthcare.dto.PasswordDto;
 import com.hms.healthcare.dto.PatientDto;
+import com.hms.healthcare.dto.ResetPasswordDto;
 
 public interface AuthService {
 
@@ -19,5 +20,9 @@ public interface AuthService {
 	Map<String, Object> verifyOtp(OtpDto otpDto);
 
 	Map<String, Object> resendOtp(String email);
+
+	Map<String, Object> forgotPassword(String email);
+
+	Map<String, Object> resetPassword(ResetPasswordDto resetPasswordDto);
 
 }

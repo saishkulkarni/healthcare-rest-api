@@ -17,6 +17,7 @@ public class MyConfig {
 		return new SecureRandom();
 	}
 
+	@SuppressWarnings({ "deprecation", "removal" })
 	@Bean
 	RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
 		RedisTemplate<String, Object> template = new RedisTemplate<>();

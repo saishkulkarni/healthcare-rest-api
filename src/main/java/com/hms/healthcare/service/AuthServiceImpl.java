@@ -18,6 +18,7 @@ import com.hms.healthcare.dto.LoginDto;
 import com.hms.healthcare.dto.OtpDto;
 import com.hms.healthcare.dto.PasswordDto;
 import com.hms.healthcare.dto.PatientDto;
+import com.hms.healthcare.dto.ResetPasswordDto;
 import com.hms.healthcare.entity.Patient;
 import com.hms.healthcare.entity.User;
 import com.hms.healthcare.enums.HospitalRoles;
@@ -123,4 +124,29 @@ public class AuthServiceImpl implements AuthService {
 		redisService.storeOtp(email, otp);
 		return Map.of("message", "OTP resent to email. Verify to complete registration");
 	}
+
+	@Override
+	public Map<String, Object> forgotPassword(String email) {
+		User user = userDao.findByEmail(email);
+		int otp = generateOtp();
+		emailService.reSendOtpEmail(email, user.getUsername(), otp);
+		redisService.storeOtp(email, otp);
+		return Map.of("message", "OTP sent to email. Use this OTP to reset your password");
+	}
+
+	@Override
+	public Map<String, Object> resetPassword(ResetPasswordDto resetPasswordDto) {
+		User user = userDao.findByEmail(resetPasswordDto.getEmail());
+		Integer storedOtp = redisService.getOtp(resetPasswordDto.getEmail());
+		if (storedOtp == null)
+			throw new IllegalArgumentException("Otp Expired. Please Try Resetting Again.");
+		if (storedOtp.equals(resetPasswordDto.getOtp())) {
+			user.setPassword(passwordEncoder.encode(resetPasswordDto.getNewPassword()));
+			userDao.save(user);
+			return Map.of("message", "Password reset successful");
+		} else {
+			throw new IllegalArgumentException("Invalid OTP. Please try again.");
+		}
+	}
+
 }
