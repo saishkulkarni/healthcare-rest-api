@@ -13,4 +13,12 @@ public interface AdminService {
 
 	Map<String, Object> getAllDoctors();
 
+	Map<String, Object> getAllReceptionists();
+
+	Map<String, Object> getAllPatients();
+
+	Map<String, Object> blockUser(Long id);
+
+	Map<String, Object> unblockUser(Long id);
+
 }

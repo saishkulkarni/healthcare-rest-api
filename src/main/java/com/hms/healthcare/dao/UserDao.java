@@ -27,4 +27,8 @@ public class UserDao {
 		return userRepository.existsByEmailOrMobile(email, mobile);
 	}
 
+	public User findById(Long id) {
+		return userRepository.findById(id).orElseThrow(() -> new DataNotFoundException("No User with id :" + id));
+	}
+
 }

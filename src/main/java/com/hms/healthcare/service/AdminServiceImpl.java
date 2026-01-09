@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.hms.healthcare.dao.DoctorDao;
+import com.hms.healthcare.dao.PatientDao;
 import com.hms.healthcare.dao.ReceptionistDao;
 import com.hms.healthcare.dao.UserDao;
 import com.hms.healthcare.dto.DoctorDto;
@@ -14,7 +15,7 @@ import com.hms.healthcare.entity.Doctor;
 import com.hms.healthcare.entity.Receptionist;
 import com.hms.healthcare.entity.User;
 import com.hms.healthcare.enums.HospitalRoles;
-import com.hms.healthcare.mapper.DoctorMapper;
+import com.hms.healthcare.mapper.UserMapper;
 import com.hms.healthcare.util.EmailService;
 
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,8 @@ public class AdminServiceImpl implements AdminService {
 	private final DoctorDao doctorDao;
 	private final ReceptionistDao receptionistDao;
 	private final EmailService emailService;
-	private final DoctorMapper doctorMapper;
+	private final UserMapper userMapper;
+	private final PatientDao patientDao;
 
 	@Override
 	public Map<String, Object> enrollDoctor(DoctorDto doctorDto) {
@@ -67,6 +69,41 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public Map<String, Object> getAllDoctors() {
-		return Map.of("message", "Doctors Found", "doctors", doctorMapper.toDoctorDtoList(doctorDao.findAll()));
+		return Map.of("message", "Doctors Found", "doctors", userMapper.toDoctorDtoList(doctorDao.findAll()));
 	}
+
+	@Override
+	public Map<String, Object> getAllReceptionists() {
+		return Map.of("message", "Receptionists Found", "receptionists",
+				userMapper.toReceptionistDtoList(receptionistDao.findAll()));
+	}
+
+	@Override
+	public Map<String, Object> getAllPatients() {
+		return Map.of("message", "Patients Found", "patients", userMapper.toPatientsDtoList(patientDao.findAll()));
+	}
+
+	@Override
+	public Map<String, Object> blockUser(Long id) {
+		User user = userDao.findById(id);
+		if (!user.getRole().equals(HospitalRoles.ADMIN)) {
+			user.setIsActive(false);
+			userDao.save(user);
+		} else
+			throw new IllegalArgumentException("You can not Block Admin Account");
+		return Map.of("message", "User Block Succcess", "user", userMapper.toUserResponseDto(user));
+	}
+
+	@Override
+	public Map<String, Object> unblockUser(Long id) {
+		User user = userDao.findById(id);
+		if (!user.getRole().equals(HospitalRoles.ADMIN)) {
+			user.setIsActive(true);
+			userDao.save(user);
+		} else
+			throw new IllegalArgumentException("Admin Account is Not Blocked");
+
+		return Map.of("message", "User Unblocked Succcess", "user", userMapper.toUserResponseDto(user));
+	}
+
 }

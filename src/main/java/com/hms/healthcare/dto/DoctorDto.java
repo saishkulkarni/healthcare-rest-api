@@ -1,5 +1,7 @@
 package com.hms.healthcare.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -22,4 +24,6 @@ public class DoctorDto {
 	private String licenceNumber;
 	@NotEmpty(message = "Address is required")
 	private String address;
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private Long UserId;
 }
