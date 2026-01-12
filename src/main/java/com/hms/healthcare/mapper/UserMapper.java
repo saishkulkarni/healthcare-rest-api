@@ -6,10 +6,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import com.hms.healthcare.dto.DoctorDto;
+import com.hms.healthcare.dto.DoctorTimeSlotDto;
 import com.hms.healthcare.dto.PatientDto;
 import com.hms.healthcare.dto.ReceptionistDto;
 import com.hms.healthcare.dto.UserResponseDto;
 import com.hms.healthcare.entity.Doctor;
+import com.hms.healthcare.entity.DoctorTimeSlot;
 import com.hms.healthcare.entity.Patient;
 import com.hms.healthcare.entity.Receptionist;
 import com.hms.healthcare.entity.User;
@@ -33,12 +35,19 @@ public interface UserMapper {
 	ReceptionistDto toReceptionistDto(Receptionist receptionist);
 
 	List<ReceptionistDto> toReceptionistDtoList(List<Receptionist> receptionists);
-	
+
 	@Mapping(target = "password", expression = "java(\"**********\")")
 	@Mapping(target = "email", expression = "java(patient.getUser().getEmail())")
 	@Mapping(target = "userId", expression = "java(patient.getUser().getId())")
 	PatientDto toPatientDto(Patient patient);
 
 	List<PatientDto> toPatientsDtoList(List<Patient> patients);
+
+	@Mapping(target = "name",expression = "java(timeSlot.getDoctor().getName())")
+	@Mapping(target = "timeSlot",source = "dateTime")
+	@Mapping(target = "specialization",expression = "java(timeSlot.getDoctor().getSpecialization())")
+	DoctorTimeSlotDto toTimeSlotDto(DoctorTimeSlot timeSlot);
+
+	List<DoctorTimeSlotDto> toTimeSlotDtoList(List<DoctorTimeSlot> timeSlots);
 
 }

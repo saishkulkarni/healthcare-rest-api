@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -81,6 +84,18 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(HttpStatus.FORBIDDEN)
 	public Map<String, Object> handle(BadCredentialsException ex) {
 		return Map.of("error", "Invalid Password");
+	}
+
+	@ExceptionHandler(ExpiredJwtException.class)
+	@ResponseStatus(HttpStatus.FORBIDDEN)
+	public Map<String, Object> handle(ExpiredJwtException ex) {
+		return Map.of("error", "Token Expired");
+	}
+
+	@ExceptionHandler(MalformedJwtException.class)
+	@ResponseStatus(HttpStatus.FORBIDDEN)
+	public Map<String, Object> handle(MalformedJwtException ex) {
+		return Map.of("error", "Invalid Token");
 	}
 
 }
