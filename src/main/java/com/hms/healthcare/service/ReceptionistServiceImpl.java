@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.hms.healthcare.dao.DoctorDao;
+import com.hms.healthcare.dto.TimeSlotRequestDto;
 import com.hms.healthcare.entity.Doctor;
 import com.hms.healthcare.entity.DoctorTimeSlot;
 import com.hms.healthcare.mapper.UserMapper;
@@ -30,6 +31,14 @@ public class ReceptionistServiceImpl implements ReceptionistService {
 		Doctor doctor = doctorDao.getByUserId(id);
 		List<DoctorTimeSlot> timeSlots = doctorDao.getDoctorsTimeSlot(doctor);
 		return Map.of("message", "TimeSlots Found", "slots", userMapper.toTimeSlotDtoList(timeSlots));
+	}
+
+	@Override
+	public Map<String, Object> addDoctorsSlot(TimeSlotRequestDto requestDto) {
+		Doctor doctor = doctorDao.getByUserId(requestDto.getUserId());
+		DoctorTimeSlot doctorTimeSlot = userMapper.toDotorTimeSlot(requestDto, doctor);
+		doctorDao.saveTimeSlot(doctorTimeSlot);
+		return Map.of("message", "Slot Added Success", "timeSlot", userMapper.toTimeSlotDto(doctorTimeSlot));
 	}
 
 }

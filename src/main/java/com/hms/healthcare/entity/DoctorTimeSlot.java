@@ -15,8 +15,8 @@ public class DoctorTimeSlot {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private LocalDateTime timeSlot;
+	private boolean booked;
 	@ManyToOne
 	private Doctor doctor;
-	private LocalDateTime dateTime;
-	private boolean booked;
 }

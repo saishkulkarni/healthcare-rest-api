@@ -40,4 +40,12 @@ public class DoctorDao {
 			throw new DataNotFoundException("No Time Slots Alloted for Doctor " + doctor.getName());
 		return timeSlots;
 	}
+
+	public void saveTimeSlot(DoctorTimeSlot doctorTimeSlot) {
+		if (!doctorTimeSlotRepository.existsByTimeSlotAndDoctor(doctorTimeSlot.getTimeSlot(),
+				doctorTimeSlot.getDoctor())) {
+			doctorTimeSlotRepository.save(doctorTimeSlot);
+		} else
+			throw new IllegalArgumentException("Already Slot Added");
+	}
 }
