@@ -17,37 +17,28 @@ Can login & change password. *
 Can create:
 Doctor *
 Receptionist *
-Sends registration email with code. *
+Sends registration email with password. *
 Can view all users. *
 
 2. Doctor
-Registers using:
-Email
-Password
-Unique registration code
-After login:
-View & update profile
-Add specialization & experience
+After login can change password:
+view profile
 View appointments
 Add prescriptions
 View patient medical history
 Mark appointment as completed
 
 3. Receptionist
-Registers using:
-Email
-Password
-Unique registration code
-Can:
+Login and change password:
 View doctors & their schedules
-Add appointments on behalf of patients
+Add doctor timme slots
 Confirm appointments physically or via call
 
 4. Patient
 Self registration (email + password)
 Login
 View doctors by specialization
-View doctor availability
+View doctor availability	
 Book appointment
 Make payment (before or after visit)
 View prescriptions & medical history
