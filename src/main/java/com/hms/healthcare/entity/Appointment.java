@@ -6,18 +6,23 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Entity
 @Data
-public class DoctorTimeSlot {
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+public class Appointment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private LocalDateTime timeSlot;
-	private boolean booked;
-	private Double fee;
-	@ManyToOne
+	private LocalDateTime appointmentTime;
+	@OneToOne
 	private Doctor doctor;
+	@OneToOne
+	private Patient patient;
+	private boolean paymentStatus;
 }

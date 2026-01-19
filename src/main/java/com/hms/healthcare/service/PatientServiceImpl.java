@@ -6,8 +6,11 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.hms.healthcare.dao.DoctorDao;
+import com.hms.healthcare.dao.PatientDao;
+import com.hms.healthcare.entity.Appointment;
 import com.hms.healthcare.entity.Doctor;
 import com.hms.healthcare.entity.DoctorTimeSlot;
+import com.hms.healthcare.entity.Patient;
 import com.hms.healthcare.mapper.UserMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,7 @@ public class PatientServiceImpl implements PatientService {
 
 	private final DoctorDao doctorDao;
 	private final UserMapper userMapper;
+	private final PatientDao patientDao;
 
 	@Override
 	public Map<String, Object> getDoctors(String name, String specialization, int size, int page, boolean desc,
@@ -41,9 +45,21 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public Map<String, Object> getDoctorsTimeSlot(Long id) {
 		Doctor doctor = doctorDao.getByUserId(id);
-		List<DoctorTimeSlot> timeSlots = doctorDao.getDoctorsTimeSlot(doctor);
+		List<DoctorTimeSlot> timeSlots = doctorDao.getDoctorsAvailableTimeSlot(doctor);
 		return Map.of("message", "Doctor AVailable at Below Time Slots", "timeSlots",
 				userMapper.toTimeSlotDtoList(timeSlots));
+	}
+
+	@Override
+	public Map<String, Object> bookAppointment(Long id, String email) {
+		Patient patient = patientDao.findPatientByEmail(email);
+		DoctorTimeSlot doctorTimeSlot = doctorDao.getDoctorTimeSlotById(id);
+		Appointment appointment = new Appointment(null, doctorTimeSlot.getTimeSlot(), doctorTimeSlot.getDoctor(),
+				patient, false);
+		patientDao.saveAppointment(appointment);
+		doctorTimeSlot.setBooked(true);
+		doctorDao.saveTimeSlot(doctorTimeSlot);
+		return Map.of("message","Appointment Booked Success","appointment",userMapper.toAppointmentDto(appointment));
 	}
 
 }

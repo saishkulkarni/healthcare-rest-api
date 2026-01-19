@@ -23,5 +23,5 @@ public class PatientDto {
 	@NotEmpty(message = "Address is required")
 	private String address;
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private Long UserId;
+	private Long userId;
 }

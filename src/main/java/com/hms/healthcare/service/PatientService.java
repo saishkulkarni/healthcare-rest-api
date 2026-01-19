@@ -8,4 +8,6 @@ public interface PatientService {
 
 	Map<String, Object> getDoctorsTimeSlot(Long id);
 
+	Map<String, Object> bookAppointment(Long id, String email);
+
 }

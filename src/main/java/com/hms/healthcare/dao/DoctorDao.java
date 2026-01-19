@@ -1,5 +1,6 @@
 package com.hms.healthcare.dao;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.PageRequest;
@@ -36,8 +37,8 @@ public class DoctorDao {
 				.orElseThrow(() -> new DataNotFoundException("No Doctor Record with Id: " + id));
 	}
 
-	public List<DoctorTimeSlot> getDoctorsTimeSlot(Doctor doctor) {
-		List<DoctorTimeSlot> timeSlots = doctorTimeSlotRepository.findByDoctor(doctor);
+	public List<DoctorTimeSlot> getDoctorsAvailableTimeSlot(Doctor doctor) {
+		List<DoctorTimeSlot> timeSlots = doctorTimeSlotRepository.findByDoctorAndBookedFalseAndTimeSlotAfter(doctor,LocalDateTime.now());
 		if (timeSlots.isEmpty())
 			throw new DataNotFoundException("No Time Slots Alloted for Doctor " + doctor.getName());
 		return timeSlots;
@@ -84,5 +85,9 @@ public class DoctorDao {
 			throw new DataNotFoundException("No Doctors Record Found with Specialization in :" + specialization);
 		else
 			return doctors;
+	}
+
+	public DoctorTimeSlot getDoctorTimeSlotById(Long id) {
+		return doctorTimeSlotRepository.findById(id).orElseThrow(()->new DataNotFoundException("No Timeslot with Id: "+id));
 	}
 }

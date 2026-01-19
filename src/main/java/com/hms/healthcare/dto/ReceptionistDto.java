@@ -1,6 +1,7 @@
 package com.hms.healthcare.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -19,5 +20,7 @@ public class ReceptionistDto {
 	@NotEmpty(message = "Address is required")
 	private String address;
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private Long UserId;
+	private Long userId;
+	@JsonProperty(access = Access.READ_ONLY)
+	private boolean status;
 }

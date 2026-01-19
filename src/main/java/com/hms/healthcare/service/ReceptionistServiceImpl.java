@@ -29,7 +29,7 @@ public class ReceptionistServiceImpl implements ReceptionistService {
 	@Override
 	public Map<String, Object> getDoctorsSlot(Long id) {
 		Doctor doctor = doctorDao.getByUserId(id);
-		List<DoctorTimeSlot> timeSlots = doctorDao.getDoctorsTimeSlot(doctor);
+		List<DoctorTimeSlot> timeSlots = doctorDao.getDoctorsAvailableTimeSlot(doctor);
 		return Map.of("message", "TimeSlots Found", "slots", userMapper.toTimeSlotDtoList(timeSlots));
 	}
 
