@@ -43,4 +43,10 @@ public class PatientController {
 		return patientService.bookAppointment(id,principal.getName());
 	}
 
+	@GetMapping("/appointments")
+	@PreAuthorize("hasRole('PATIENT')")
+	public Map<String, Object> viewAppointments(Principal principal) {
+		return patientService.viewAppointments(principal.getName());
+	}
+
 }

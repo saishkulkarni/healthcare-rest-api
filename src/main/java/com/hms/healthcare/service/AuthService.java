@@ -25,4 +25,6 @@ public interface AuthService {
 
 	Map<String, Object> resetPassword(ResetPasswordDto resetPasswordDto);
 
+	Map<String, Object> viewProfile(String name);
+
 }

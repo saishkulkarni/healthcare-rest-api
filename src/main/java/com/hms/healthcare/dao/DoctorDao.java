@@ -7,9 +7,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
+import com.hms.healthcare.entity.Appointment;
 import com.hms.healthcare.entity.Doctor;
 import com.hms.healthcare.entity.DoctorTimeSlot;
+import com.hms.healthcare.entity.User;
 import com.hms.healthcare.exception.DataNotFoundException;
+import com.hms.healthcare.repository.AppointmentRepository;
 import com.hms.healthcare.repository.DoctorRepository;
 import com.hms.healthcare.repository.DoctorTimeSlotRepository;
 
@@ -20,6 +23,8 @@ import lombok.RequiredArgsConstructor;
 public class DoctorDao {
 	private final DoctorRepository doctorRepository;
 	private final DoctorTimeSlotRepository doctorTimeSlotRepository;
+	private final UserDao userDao;
+	private final AppointmentRepository appointmentRepository;
 
 	public void save(Doctor doctor) {
 		doctorRepository.save(doctor);
@@ -38,7 +43,8 @@ public class DoctorDao {
 	}
 
 	public List<DoctorTimeSlot> getDoctorsAvailableTimeSlot(Doctor doctor) {
-		List<DoctorTimeSlot> timeSlots = doctorTimeSlotRepository.findByDoctorAndBookedFalseAndTimeSlotAfter(doctor,LocalDateTime.now());
+		List<DoctorTimeSlot> timeSlots = doctorTimeSlotRepository.findByDoctorAndBookedFalseAndTimeSlotAfter(doctor,
+				LocalDateTime.now());
 		if (timeSlots.isEmpty())
 			throw new DataNotFoundException("No Time Slots Alloted for Doctor " + doctor.getName());
 		return timeSlots;
@@ -88,6 +94,19 @@ public class DoctorDao {
 	}
 
 	public DoctorTimeSlot getDoctorTimeSlotById(Long id) {
-		return doctorTimeSlotRepository.findById(id).orElseThrow(()->new DataNotFoundException("No Timeslot with Id: "+id));
+		return doctorTimeSlotRepository.findById(id)
+				.orElseThrow(() -> new DataNotFoundException("No Timeslot with Id: " + id));
+	}
+
+	public Doctor findByEmail(String email) {
+		User user = userDao.findByEmail(email);
+		return doctorRepository.findByUser(user).orElseThrow(() -> new DataNotFoundException("No Doctor Record Found"));
+	}
+
+	public List<Appointment> getAppointments(Doctor doctor) {
+		List<Appointment> appointments = appointmentRepository.findByDoctor(doctor);
+		if (appointments.isEmpty())
+			throw new DataNotFoundException("No Appointments Scheduled yet");
+		return appointments;
 	}
 }

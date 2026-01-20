@@ -12,4 +12,6 @@ public interface ReceptionistService {
 
 	Map<String, Object> addDoctorsSlot(TimeSlotRequestDto requestDto);
 
+	Map<String, Object> viewAllAppointments();
+
 }

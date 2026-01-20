@@ -14,5 +14,5 @@ public class AppointmentDto {
 	private String patientName;
 	private String doctorName;
 	private LocalDateTime appointmentTime;
-	private boolean paymentStatus;
+	private String paymentStatus;
 }

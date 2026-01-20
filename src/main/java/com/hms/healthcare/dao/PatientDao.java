@@ -42,4 +42,11 @@ public class PatientDao {
 		appointmentRepository.save(appointment);
 	}
 
+	public List<Appointment> getAppointments(Patient patient) {
+		List<Appointment> appointments = appointmentRepository.findByPatient(patient);
+		if (appointments.isEmpty())
+			throw new DataNotFoundException("No Appointments Scheduled yet");
+		return appointments;
+	}
+
 }

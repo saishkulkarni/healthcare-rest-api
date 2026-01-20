@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.hms.healthcare.entity.Doctor;
+import com.hms.healthcare.entity.User;
 
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
@@ -16,5 +17,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 	List<Doctor> findBySpecialization(String specialization);
 
 	List<Doctor> findByNameContains(String name);
+
+	Optional<Doctor> findByUser(User user);
 
 }

@@ -39,4 +39,10 @@ public class ReceptionistController {
 	public Map<String, Object> addDoctorsSlot(@RequestBody TimeSlotRequestDto requestDto) {
 		return receptionistService.addDoctorsSlot(requestDto);
 	}
+	
+	@GetMapping("/appointments")
+	@PreAuthorize("hasRole('RECEPTIONIST')")
+	public Map<String, Object> viewAppointments() {
+		return receptionistService.viewAllAppointments();
+	}
 }

@@ -149,4 +149,10 @@ public class AuthServiceImpl implements AuthService {
 		}
 	}
 
+	@Override
+	public Map<String, Object> viewProfile(String email) {
+		User user = userDao.findByEmail(email);
+		return Map.of("message", "User Found", "user", userMapper.toUserResponseDto(user));
+	}
+
 }

@@ -10,4 +10,6 @@ public interface PatientService {
 
 	Map<String, Object> bookAppointment(Long id, String email);
 
+	Map<String, Object> viewAppointments(String email);
+
 }

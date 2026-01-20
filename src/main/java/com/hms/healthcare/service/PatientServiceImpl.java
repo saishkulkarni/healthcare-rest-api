@@ -54,12 +54,22 @@ public class PatientServiceImpl implements PatientService {
 	public Map<String, Object> bookAppointment(Long id, String email) {
 		Patient patient = patientDao.findPatientByEmail(email);
 		DoctorTimeSlot doctorTimeSlot = doctorDao.getDoctorTimeSlotById(id);
+		if (doctorTimeSlot.isBooked())
+			throw new IllegalArgumentException("Already Slot Booked");
 		Appointment appointment = new Appointment(null, doctorTimeSlot.getTimeSlot(), doctorTimeSlot.getDoctor(),
 				patient, false);
 		patientDao.saveAppointment(appointment);
 		doctorTimeSlot.setBooked(true);
 		doctorDao.saveTimeSlot(doctorTimeSlot);
-		return Map.of("message","Appointment Booked Success","appointment",userMapper.toAppointmentDto(appointment));
+		return Map.of("message", "Appointment Booked Success", "appointment", userMapper.toAppointmentDto(appointment));
+	}
+
+	@Override
+	public Map<String, Object> viewAppointments(String email) {
+		Patient patient = patientDao.findPatientByEmail(email);
+		List<Appointment> appointments = patientDao.getAppointments(patient);
+		return Map.of("message", "Appoinments Found Success", "appointments",
+				userMapper.toAppointmentDtoList(appointments));
 	}
 
 }
