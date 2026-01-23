@@ -49,4 +49,12 @@ public class PatientDao {
 		return appointments;
 	}
 
+	public Patient findById(Long id) {
+		return patientRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Patient Record Not Found"));
+	}
+
+	public Appointment getAppointmentFromId(Long id) {
+		return appointmentRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Appointment Not Found"));
+	}
+
 }

@@ -3,12 +3,14 @@ package com.hms.healthcare.controller;
 import java.security.Principal;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hms.healthcare.service.PatientService;
@@ -39,8 +41,8 @@ public class PatientController {
 
 	@PostMapping("/appointments/{id}")
 	@PreAuthorize("hasRole('PATIENT')")
-	public Map<String, Object> bookAppointment(@PathVariable Long id,Principal principal) {
-		return patientService.bookAppointment(id,principal.getName());
+	public Map<String, Object> bookAppointment(@PathVariable Long id, Principal principal) {
+		return patientService.bookAppointment(id, principal.getName());
 	}
 
 	@GetMapping("/appointments")
@@ -49,4 +51,11 @@ public class PatientController {
 		return patientService.viewAppointments(principal.getName());
 	}
 
+	@PostMapping("/payment/{id}")
+	@PreAuthorize("hasAnyRole('PATIENT','RECEPTIONIST')")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Map<String, Object> initiatePayment(Principal principal, @RequestParam(defaultValue =  "0") Long patientId,
+			@PathVariable Long id) {
+		return patientService.createPayment(principal.getName(), patientId, id);
+	}
 }

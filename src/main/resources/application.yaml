@@ -31,3 +31,6 @@ admin:
 jwt:
   secret: ${JWT_SECRET:gajsdhjagsdgadsgjtbqwytebqwtyqbtsddyuagsdgasdjhasdjgajsdgagsdjgasjdgjhasgdhgasdgqwenbsdoiqweoiquweqweqwe}
   expirytime: ${JWT_EXPIRY:86400000}
+razorpay:
+  key: ${RZRPY_KEY:rzp_test_RaPsJq0rZSFWD1}
+  secret: ${RZRPY_SECRET:ZO0swacFGMgyE71JVvGuBOFP}

@@ -12,4 +12,6 @@ public interface PatientService {
 
 	Map<String, Object> viewAppointments(String email);
 
+	Map<String, Object> createPayment(String name, Long patientId, Long id);
+
 }
