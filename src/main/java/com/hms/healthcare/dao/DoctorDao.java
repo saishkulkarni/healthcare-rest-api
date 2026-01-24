@@ -109,4 +109,6 @@ public class DoctorDao {
 			throw new DataNotFoundException("No Appointments Scheduled yet");
 		return appointments;
 	}
+
+	
 }

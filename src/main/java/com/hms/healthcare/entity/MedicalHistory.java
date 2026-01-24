@@ -1,6 +1,6 @@
 package com.hms.healthcare.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,17 +15,18 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Appointment {
+public class MedicalHistory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private LocalDateTime appointmentTime;
+	private String diagnosis;
+	private String presecription;
+	private String scanning;
+	private String suggestions;
+	private LocalDate visitDate;
+	private LocalDate followUpDate;
+	private Long appointmentId;
+	private String doctorName;
 	@ManyToOne
-	private Doctor doctor;
-	@ManyToOne
-	private Patient patient;
-	private boolean paymentStatus;
-	private boolean isDone;
-	private Double fee;
-	private String paymentId;
+	Patient patient;
 }

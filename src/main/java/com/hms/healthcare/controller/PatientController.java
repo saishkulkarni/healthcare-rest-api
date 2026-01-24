@@ -58,4 +58,16 @@ public class PatientController {
 			@PathVariable Long id) {
 		return patientService.createPayment(principal.getName(), patientId, id);
 	}
+	
+	@PostMapping("/payment/confirm/{id}")
+	public Map<String, Object> confirmPayment(@RequestParam String razorpay_payment_id,
+			@PathVariable Long id) {
+		return patientService.confirmPayment(id,razorpay_payment_id);
+	}
+	
+	@GetMapping("/history")
+	@PreAuthorize("hasRole('PATIENT')")
+	public Map<String, Object> viewHistory(Principal principal){
+		return patientService.viewHistory(principal.getName());
+	}
 }

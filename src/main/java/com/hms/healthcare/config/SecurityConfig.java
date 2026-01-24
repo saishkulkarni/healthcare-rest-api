@@ -39,6 +39,7 @@ public class SecurityConfig {
 	SecurityFilterChain securityFilterChain(HttpSecurity security) {
 		return security.csrf(x -> x.disable()).cors(cors -> cors.configurationSource(corsConfigurationSource()))
 				.authorizeHttpRequests(x -> x.requestMatchers("/api/v1/auth/**").permitAll()
+						.requestMatchers("/api/v1/patients/payment/confirm/**").permitAll()
 						.requestMatchers(swaggerPaths).permitAll().anyRequest().authenticated())
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 				.sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).build();

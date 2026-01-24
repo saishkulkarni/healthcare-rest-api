@@ -14,4 +14,8 @@ public interface PatientService {
 
 	Map<String, Object> createPayment(String name, Long patientId, Long id);
 
+	Map<String, Object> confirmPayment(Long id, String razaorpay_payment_id);
+
+	Map<String, Object> viewHistory(String email);
+
 }

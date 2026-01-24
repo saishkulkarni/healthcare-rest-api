@@ -64,9 +64,9 @@ public interface UserMapper {
 	@Mapping(target = "appointmentId", source = "id")
 	@Mapping(target = "patientName", expression = "java(appointment.getPatient().getName())")
 	@Mapping(target = "doctorName", expression = "java(appointment.getDoctor().getName())")
-	@Mapping(target = "paymentStatus",expression = "java(appointment.isPaymentStatus()?\"Done\":\"Not Done\")")
-	@Mapping(target = "doctorMobile",expression = "java(appointment.getDoctor().getPhoneNumber())")
-	@Mapping(target = "patientMobile",expression = "java(appointment.getPatient().getMobile())")
+	@Mapping(target = "paymentStatus", expression = "java(appointment.isPaymentStatus()?\"Done\":\"Not Done\")")
+	@Mapping(target = "doctorMobile", expression = "java(appointment.getDoctor().getPhoneNumber())")
+	@Mapping(target = "patientMobile", expression = "java(appointment.getPatient().getMobile())")
 	AppointmentDto toAppointmentDto(Appointment appointment);
 
 	List<AppointmentDto> toAppointmentDtoList(List<Appointment> appointments);

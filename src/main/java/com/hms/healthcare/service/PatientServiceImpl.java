@@ -13,6 +13,7 @@ import com.hms.healthcare.dao.PatientDao;
 import com.hms.healthcare.entity.Appointment;
 import com.hms.healthcare.entity.Doctor;
 import com.hms.healthcare.entity.DoctorTimeSlot;
+import com.hms.healthcare.entity.MedicalHistory;
 import com.hms.healthcare.entity.Patient;
 import com.hms.healthcare.mapper.UserMapper;
 import com.razorpay.Order;
@@ -64,8 +65,6 @@ public class PatientServiceImpl implements PatientService {
 	public Map<String, Object> bookAppointment(Long id, String email) {
 		Patient patient = patientDao.findPatientByEmail(email);
 		DoctorTimeSlot doctorTimeSlot = doctorDao.getDoctorTimeSlotById(id);
-		if (doctorTimeSlot.isBooked())
-			throw new IllegalArgumentException("Already Slot Booked");
 		Appointment appointment = new Appointment(null, doctorTimeSlot.getTimeSlot(), doctorTimeSlot.getDoctor(),
 				patient, false, false, doctorTimeSlot.getFee(), null);
 		patientDao.saveAppointment(appointment);
@@ -116,6 +115,22 @@ public class PatientServiceImpl implements PatientService {
 		}
 		response.put("callbackUrl", "/patients/payment/confirm/" + id);
 		return Map.of("message", "Payment Initiated Success", "payment", response);
+	}
+
+	@Override
+	public Map<String, Object> confirmPayment(Long id, String razaorpay_payment_id) {
+		Appointment appointment = patientDao.getAppointmentFromId(id);
+		appointment.setPaymentStatus(true);
+		appointment.setPaymentId(razaorpay_payment_id);
+		patientDao.saveAppointment(appointment);
+		return Map.of("message", "Payment COnfirmed", "appointment", userMapper.toAppointmentDto(appointment));
+	}
+
+	@Override
+	public Map<String, Object> viewHistory(String email) {
+		Patient patient = patientDao.findPatientByEmail(email);
+		List<MedicalHistory> histories = patientDao.getMedicalHistory(patient);
+		return Map.of("message", "Details Found", "medical-history", histories);
 	}
 
 }
